@@ -1311,7 +1311,12 @@ end
 get "/dilbert" do
   @feed = Feedjira.parse(HTTP.get("http://feeds.dilbert.com/DilbertDailyStrip").body)
   @entries = @feed.entries.map do |entry|
-    data = $redis.get("dilbert:#{entry.id}")
+    feed = Feed.first(feed_key: "dilbert:#{entry.id}")
+
+    if feed
+      data = feed.value
+    end
+
     if data
       data = JSON.parse(data)
     else
@@ -1321,7 +1326,7 @@ get "/dilbert" do
         "title" => og.title,
         "description" => og.description,
       }
-      $redis.setex("dilbert:#{entry.id}", 60*60*24*30, data.to_json)
+      # $redis.setex("dilbert:#{entry.id}", 60*60*24*30, data.to_json)
     end
     data.merge({
       "id" => entry.id
@@ -1344,11 +1349,9 @@ get "/opensearch.xml" do
 end
 
 get "/health" do
-  if $redis.ping != "PONG"
-    return [500, "Redis error"]
-  end
-rescue Redis::CannotConnectError => e
-  return [500, "Redis connection error"]
+  Feed.count
+rescue StandardError => e
+  return [500, "Database connection error"]
 end
 
 if ENV["GOOGLE_VERIFICATION_TOKEN"]

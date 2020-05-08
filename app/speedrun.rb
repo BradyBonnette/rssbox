@@ -15,7 +15,14 @@ class Speedrun < HTTP
   def self.resolve_id(type, id)
     @@cache[type] ||= {}
     return @@cache[type][id] if @@cache[type][id]
-    value = $redis.get("speedrun:#{type}:#{id}")
+
+    value = nil
+    feed = Feed.first(feed_key: "speedrun:#{type}:#{id}")
+
+    if feed
+      value = feed.value
+    end
+
     if value
       @@cache[type][id] = if type == "level-subcategories"
         JSON.parse(value)
@@ -43,7 +50,10 @@ class Speedrun < HTTP
       redis_value = value.to_json
     end
 
-    $redis.set("speedrun:#{type}:#{id}", redis_value)
+    feed = Feed.create(
+      feed_key: "speedrun:#{type}:#{id}",
+      value: redis_value
+    )
     @@cache[type][id] = value
     return value
   end

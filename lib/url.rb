@@ -22,7 +22,14 @@ class URL
     end.uniq.select do |url|
       if !force
         next false if @@cache.has_key?(url)
-        dest = $redis.get("url:#{url}")
+
+        dest = nil
+        feed = Feed.first(feed_key: "url:#{url}")
+
+        if feed
+          dest = feed.value
+        end
+
         if dest
           @@cache[url] = dest
           next false
@@ -131,7 +138,11 @@ class URL
     # puts "#{url} => #{dest}"
     dest = "" if url == dest
     @@cache[url] = dest
-    $redis.set("url:#{url}", dest)
+
+    feed = Feed.create(
+      feed_key: "url:#{url}",
+      value: dest
+    )
 
     $metrics[:urls].increment
   end
