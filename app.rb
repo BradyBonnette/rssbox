@@ -42,6 +42,12 @@ after do
   end
 end
 
+# Password protect the entire site
+use Rack::Auth::Basic, "Protected Area" do |username, password|
+  Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(username), ::Digest::SHA256.hexdigest(ENV["RSS_USERNAME"])) &
+    Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(password), ::Digest::SHA256.hexdigest(ENV["RSS_PASSWORD"]))
+end
+
 get "/" do
   SecureHeaders.use_secure_headers_override(request, :index)
   erb :index
