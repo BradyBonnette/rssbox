@@ -8,7 +8,7 @@ require "open-uri"
 require 'data_mapper' # metagem, requires common plugins too.
 
 # need install dm-sqlite-adapter
-DataMapper::setup(:default, ENV['DB_URL'])
+DataMapper::setup(:default, ENV['DATABASE_URL'])
 
 class Feed
   include DataMapper::Resource
