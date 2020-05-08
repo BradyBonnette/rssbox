@@ -5,6 +5,19 @@ require "sinatra"
 require "./config/application"
 require "open-uri"
 
+require 'data_mapper' # metagem, requires common plugins too.
+
+# need install dm-sqlite-adapter
+DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/feeds.db")
+
+class Feed
+  include DataMapper::Resource
+  # property :id, Serial
+  property :feed_key, String, key: true
+  property :value, Text
+  property :created_at, DateTime
+end
+
 before do
   content_type :text
 end
@@ -1364,3 +1377,10 @@ error Sinatra::NotFound do
   content_type :text
   [404, "Sorry, that route does not exist."]
 end
+
+# Perform basic sanity checks and initialize all relationships
+# Call this when you've defined all your models
+DataMapper.finalize
+
+# automatically create the post table
+Feed.auto_upgrade!

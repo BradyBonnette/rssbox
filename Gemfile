@@ -19,6 +19,9 @@ gem "heroku-env"
 gem "tzinfo"
 gem "nokogiri"
 gem "prometheus-client", require: "prometheus/middleware/exporter"
+gem "data_mapper"
+gem "sqlite3"
+gem "dm-sqlite-adapter"
 
 # dilbert feed
 gem "feedjira"
@@ -34,4 +37,5 @@ group :development do
   # gem "better_errors"
   gem "pry-remote"
   gem "github-release-party"
+  gem "pry"
 end

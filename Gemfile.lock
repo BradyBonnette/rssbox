@@ -8,10 +8,62 @@ GEM
     airbrake-ruby (4.14.1)
       rbtree3 (~> 0.5)
     backports (3.17.1)
+    bcrypt (3.1.13)
+    bcrypt-ruby (3.1.5)
+      bcrypt (>= 3.1.3)
     coderay (1.1.2)
     concurrent-ruby (1.1.6)
     crass (1.0.6)
+    data_mapper (1.2.0)
+      dm-aggregates (~> 1.2.0)
+      dm-constraints (~> 1.2.0)
+      dm-core (~> 1.2.0)
+      dm-migrations (~> 1.2.0)
+      dm-serializer (~> 1.2.0)
+      dm-timestamps (~> 1.2.0)
+      dm-transactions (~> 1.2.0)
+      dm-types (~> 1.2.0)
+      dm-validations (~> 1.2.0)
+    data_objects (0.10.17)
+      addressable (~> 2.1)
+    dm-aggregates (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-constraints (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-core (1.2.1)
+      addressable (~> 2.3)
+    dm-do-adapter (1.2.0)
+      data_objects (~> 0.10.6)
+      dm-core (~> 1.2.0)
+    dm-migrations (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-serializer (1.2.2)
+      dm-core (~> 1.2.0)
+      fastercsv (~> 1.5)
+      json (~> 1.6)
+      json_pure (~> 1.6)
+      multi_json (~> 1.0)
+    dm-sqlite-adapter (1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      do_sqlite3 (~> 0.10.6)
+    dm-timestamps (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-transactions (1.2.0)
+      dm-core (~> 1.2.0)
+    dm-types (1.2.2)
+      bcrypt-ruby (~> 3.0)
+      dm-core (~> 1.2.0)
+      fastercsv (~> 1.5)
+      json (~> 1.6)
+      multi_json (~> 1.0)
+      stringex (~> 1.4)
+      uuidtools (~> 2.1)
+    dm-validations (1.2.0)
+      dm-core (~> 1.2.0)
+    do_sqlite3 (0.10.17)
+      data_objects (= 0.10.17)
     dotenv (2.7.5)
+    fastercsv (1.5.5)
     feedjira (3.1.1)
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
@@ -21,6 +73,8 @@ GEM
     io-console (0.5.6)
     irb (1.2.3)
       reline (>= 0.0.1)
+    json (1.8.6)
+    json_pure (1.8.6)
     loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -75,10 +129,13 @@ GEM
       sinatra (= 2.0.8.1)
       tilt (~> 2.0)
     slop (3.6.0)
+    sqlite3 (1.4.2)
+    stringex (1.5.1)
     thor (1.0.1)
     tilt (2.0.10)
     tzinfo (2.0.2)
       concurrent-ruby (~> 1.0)
+    uuidtools (2.1.5)
     yajl-ruby (1.4.1)
 
 PLATFORMS
@@ -87,6 +144,8 @@ PLATFORMS
 DEPENDENCIES
   addressable
   airbrake
+  data_mapper
+  dm-sqlite-adapter
   dotenv
   feedjira
   github-release-party
@@ -97,6 +156,7 @@ DEPENDENCIES
   opengraph_parser
   powder
   prometheus-client
+  pry
   pry-remote
   puma
   rack
@@ -107,6 +167,7 @@ DEPENDENCIES
   secure_headers
   sinatra
   sinatra-contrib
+  sqlite3
   tzinfo
   yajl-ruby
 
@@ -114,4 +175,4 @@ RUBY VERSION
    ruby 2.6.6p146
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

@@ -29,7 +29,14 @@ class Instagram < HTTP
 
   def self.get_post(id, opts={})
     return @@cache[id] if @@cache[id]
-    value = $redis.get("instagram:#{id}")
+
+    value = nil
+    feed = Feed.first(feed_key: "instagram:#{id}")
+
+    if feed
+      value = feed.value
+    end
+
     if value
       @@cache[id] = JSON.parse(value)
       return @@cache[id]
@@ -48,7 +55,11 @@ class Instagram < HTTP
       post.slice("is_video", "display_url", "video_url")
     end
 
-    $redis.set("instagram:#{id}", @@cache[id].to_json)
+    feed = Feed.create(
+      feed_key: "instagram:#{id}",
+      value: @@cache[id].to_json
+    )
+
     return @@cache[id]
   end
 end

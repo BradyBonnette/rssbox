@@ -18,3 +18,4 @@ ubuntu-*-cloudimg-console.log
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+feeds.db
