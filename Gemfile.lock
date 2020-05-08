@@ -37,15 +37,15 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
+    dm-postgres-adapter (1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      do_postgres (~> 0.10.6)
     dm-serializer (1.2.2)
       dm-core (~> 1.2.0)
       fastercsv (~> 1.5)
       json (~> 1.6)
       json_pure (~> 1.6)
       multi_json (~> 1.0)
-    dm-sqlite-adapter (1.2.0)
-      dm-do-adapter (~> 1.2.0)
-      do_sqlite3 (~> 0.10.6)
     dm-timestamps (1.2.0)
       dm-core (~> 1.2.0)
     dm-transactions (1.2.0)
@@ -60,7 +60,7 @@ GEM
       uuidtools (~> 2.1)
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
-    do_sqlite3 (0.10.17)
+    do_postgres (0.10.17)
       data_objects (= 0.10.17)
     dotenv (2.7.5)
     fastercsv (1.5.5)
@@ -129,7 +129,6 @@ GEM
       sinatra (= 2.0.8.1)
       tilt (~> 2.0)
     slop (3.6.0)
-    sqlite3 (1.4.2)
     stringex (1.5.1)
     thor (1.0.1)
     tilt (2.0.10)
@@ -145,7 +144,7 @@ DEPENDENCIES
   addressable
   airbrake
   data_mapper
-  dm-sqlite-adapter
+  dm-postgres-adapter
   dotenv
   feedjira
   github-release-party
@@ -167,7 +166,6 @@ DEPENDENCIES
   secure_headers
   sinatra
   sinatra-contrib
-  sqlite3
   tzinfo
   yajl-ruby
 

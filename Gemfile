@@ -20,8 +20,7 @@ gem "tzinfo"
 gem "nokogiri"
 gem "prometheus-client", require: "prometheus/middleware/exporter"
 gem "data_mapper"
-gem "sqlite3"
-gem "dm-sqlite-adapter"
+gem "dm-postgres-adapter"
 
 # dilbert feed
 gem "feedjira"
