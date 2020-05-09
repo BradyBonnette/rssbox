@@ -42,24 +42,37 @@ after do
   end
 end
 
-# Password protect the entire site
-use Rack::Auth::Basic, "Protected Area" do |username, password|
-  Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(username), ::Digest::SHA256.hexdigest(ENV["RSS_USERNAME"])) &
-    Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(password), ::Digest::SHA256.hexdigest(ENV["RSS_PASSWORD"]))
+def authorized?
+  @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+
+  if @auth.provided? && @auth.basic?
+    Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(@auth.credentials.first), ::Digest::SHA256.hexdigest(ENV["RSS_USERNAME"])) &
+      Rack::Utils.secure_compare(::Digest::SHA256.hexdigest(@auth.credentials.last), ::Digest::SHA256.hexdigest(ENV["RSS_PASSWORD"]))
+  end
+end
+
+def protected!
+  unless authorized?
+    response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+    throw(:halt, [401, "Oops... we need your login name & password\n"])
+  end
 end
 
 get "/" do
+  protected!
   SecureHeaders.use_secure_headers_override(request, :index)
   erb :index
 end
 
 get "/live" do
+  protected!
   content_type :html
   SecureHeaders.use_secure_headers_override(request, :live)
   send_file File.join(settings.public_folder, "live.html")
 end
 
 get "/countdown" do
+  protected!
   content_type :html
   SecureHeaders.use_secure_headers_override(request, :countdown)
   send_file File.join(settings.public_folder, "countdown.html")
